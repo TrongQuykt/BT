@@ -29,10 +29,25 @@
             </div>
             <div class="form-group">
                 <label asp-for="ImageUrl" class="control-label"></label>
-                    <input type="file" asp-for="ImageUrl" class="form-control" onchange="previewImage(this)" />
+                <input type="file" asp-for="ImageUrl" class="form-control" onchange="previewImagee(this)" multiple/>
                 <span asp-validation-for="ImageUrl" class="text-danger"></span>
                     <img id="preview" style="display:none; margin-top: 10px;" width="170px" />
             </div>
+                <div class="form-group">
+                    <label for="detailImage1" class="control-label">Detail Image 1</label>
+                    <input type="file" id="detailImage1" name="detailImages" class="form-control" onchange="previewImage(this, 'previewDetailImage1')" />
+                    <img id="previewDetailImage1" style="display:none; margin-top: 10px;" width="170px" />
+                </div>
+                <div class="form-group">
+                    <label for="detailImage2" class="control-label">Detail Image 2</label>
+                    <input type="file" id="detailImage2" name="detailImages" class="form-control" onchange="previewImage(this, 'previewDetailImage2')" />
+                    <img id="previewDetailImage2" style="display:none; margin-top: 10px;" width="170px" />
+                </div>
+                <div class="form-group">
+                    <label for="detailImage3" class="control-label">Detail Image 3</label>
+                    <input type="file" id="detailImage3" name="detailImages" class="form-control" onchange="previewImage(this, 'previewDetailImage3')" />
+                    <img id="previewDetailImage3" style="display:none; margin-top: 10px;" width="170px" />
+                </div>
             <div class="form-group">
                 <label asp-for="CategoryId" class="control-label"></label>
                 <select asp-for="CategoryId" class ="form-control" asp-items="ViewBag.Categories"></select>
@@ -49,8 +64,21 @@
 </div>
 </div>
 <script>
-    function previewImage(input) {
+    function previewImagee(input) {
         var preview = document.getElementById('preview');
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+<script>
+    function previewImage(input, previewId) {
+        var preview = document.getElementById(previewId);
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function (e) {

@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<WebBanHang.Models.Product>
 
+
 @{
     ViewData["Title"] = "Index";
 }
@@ -27,6 +28,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Category)
             </th>
+            <th>Details Images</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -53,6 +55,19 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Category.Name)
+            </td>
+            <td>
+                        @if (item.Images != null && item.Images.Any())
+                        {
+                            foreach (var image in item.Images)
+                            {
+                                <img src="@Html.DisplayFor(modelItem => image.Url)" width="80px" style="margin-right: 5px;" />
+                            }
+                        }
+                        else
+                        {
+                            <span>No images available</span>
+                        }
             </td>
             <td>
                 <a asp-action="Update" asp-route-id="@item.Id" style="background: #FFFF33; text-decoration: none; color: #000; border-radius: 5px; border: 2px solid #000; padding: 5px 20px;">Edit</a> |

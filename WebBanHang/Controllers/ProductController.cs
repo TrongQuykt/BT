@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using WebBanHang.Models;
 
 namespace WebBanHang.Controllers
@@ -29,7 +30,7 @@ namespace WebBanHang.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(Product product, IFormFile imageUrl, List<IFormFile> imageUrls)
+        public async Task<IActionResult> Add(Product product, IFormFile imageUrl, List<IFormFile> detailImages)
         {
             if (ModelState.IsValid)
             {
@@ -38,9 +39,26 @@ namespace WebBanHang.Controllers
                     product.ImageUrl = await SaveImage(imageUrl);
                 }
 
+                // Thêm sản phẩm chính
                 await _productRepository.AddAsync(product);
+
+                // Lưu ảnh chi tiết vào danh sách Images của sản phẩm
+                foreach (var detailImage in detailImages.Take(3))
+                {
+                    var detailImageUrl = await SaveImage(detailImage);
+                    // Tạo đối tượng ProductImage
+                    var productImage = new ProductImage { Url = detailImageUrl, ProductId = product.Id };
+                    // Thêm productImage vào danh sách Images của sản phẩm
+                    product.Images ??= new List<ProductImage>();
+                    product.Images.Add(productImage);
+                }
+
+                // Cập nhật sản phẩm với danh sách Images mới
+                await _productRepository.UpdateAsync(product);
+
                 return RedirectToAction(nameof(Index));
             }
+
             var categories = await _categoryRepository.GetAllAsync();
             ViewBag.Categories = new SelectList(categories, "Id", "Name");
             return View(product);
@@ -63,7 +81,7 @@ namespace WebBanHang.Controllers
             {
                 return NotFound();
             }
-            await _productRepository.LoadProductImagesAsync(product);
+
             return View(product);
         }
 
