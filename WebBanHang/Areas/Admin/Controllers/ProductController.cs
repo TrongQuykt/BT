@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WebBanHang.Models;
 
-namespace WebBanHang.Controllers
+namespace WebBanHang.Areas.Admin.Controllers
 {
+    [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class ProductController : Controller
     {
         private readonly IProductRepository _productRepository;
@@ -64,7 +66,7 @@ namespace WebBanHang.Controllers
             {
                 return NotFound();
             }
-            await _productRepository.LoadProductImagesAsync(product);
+
             return View(product);
         }
 

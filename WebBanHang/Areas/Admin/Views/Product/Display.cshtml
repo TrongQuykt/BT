@@ -1,0 +1,60 @@
+﻿@model WebBanHang.Models.Product
+
+@{
+    ViewData["Title"] = "Display";
+}
+<div style="background: linear-gradient(45deg, #33FFCC, #009966, #00FF66); border-radius: 10px; border: 3px solid #000">
+    <h1 style="align-items: center; justify-content: center; display: flex">Display</h1>
+    <div>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Price)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Price)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ImageUrl)
+            </dt>
+            <dd class="col-sm-10">
+                <img src="@Html.DisplayFor(model => model.ImageUrl)" width="120px" />
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Category)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Category.Name)
+            </dd>
+            <dd>
+                @if (Model.Images != null && Model.Images.Any())
+                {
+                    foreach (var image in Model.Images)
+                    {
+                        <img src="@image.Url" width="200px" />
+                    }
+                }
+                else
+                {
+                    <span>No images available</span>
+                }
+            </dd>
+        </dl>
+    </div>
+    <div>
+
+        <a asp-action="Index" style="background: #0099FF; border-radius: 6px; width: 180px; height: 40px; display: inline-flex; justify-content: center; align-items: center; text-decoration: none; color: #fff; border: 2px solid #000;  align-items: center; justify-content: center; display:flex; margin-bottom: 15px; margin-top: 10px">Back to List</a>
+    </div>
+</div>
