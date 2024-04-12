@@ -44,6 +44,7 @@ namespace WebBanHang.Controllers
             HttpContext.Session.Remove("Cart");
             return View("OrderCompleted", order.Id);
         }
+        [HttpPost]
         public async Task<IActionResult> AddToCart(int productId, int quantity)
         {
             // Giả sử bạn có phương thức lấy thông tin sản phẩm từ productId
@@ -75,6 +76,7 @@ namespace WebBanHang.Controllers
             var product = await _productRepository.GetByIdAsync(productId);
             return product;
         }
+        [HttpPost]
         public IActionResult RemoveFromCart(int productId)
         {
             var cart = HttpContext.Session.GetObjectFromJson<ShoppingCart>("Cart");

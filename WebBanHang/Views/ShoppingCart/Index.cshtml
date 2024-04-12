@@ -1,11 +1,54 @@
 ﻿@model ShoppingCart
-<h2>Your Cart</h2>
+<style>
+    /* Reset default browser styles for table */
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    /* Style the table header */
+    th {
+        background-color: #f2f2f2;
+        color: #333;
+        font-weight: bold;
+        padding: 8px;
+        text-align: left;
+    }
+
+    /* Style the table rows */
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    /* Style the table cells */
+    td {
+        padding: 8px;
+    }
+
+    /* Style the action buttons */
+    btn {
+        padding: 6px 10px;
+        text-decoration: none;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+</style>
+<h2 style="text-align: center">Your Cart</h2>
 <table>
     <tr>
         <th>Product</th>
         <th>Quantity</th>
         <th>Price</th>
         <th>Total</th>
+        <th>Actions</th>
     </tr>
     @foreach (var item in Model.Items)
     {
@@ -15,9 +58,16 @@
             <td>@item.Price</td>
             <td>@(item.Price * item.Quantity)</td>
             <td>
-                <a asp-action="RemoveFromCart" asp-routeproductId="@item.ProductId">Remove</a>
+                <!-- Sử dụng form để xóa sản phẩm -->
+                <form asp-action="RemoveFromCart" method="post">
+                    <input type="hidden" name="productId" value="@item.ProductId" />
+                    <button type="submit" class="btn" style="background: red">Remove</button>
+                
+                <!-- Link để thanh toán, giữ nguyên hoặc cũng có thể chuyển sang dùng form tương tự -->
+                <a asp-action="Checkout" asp-controller="ShoppingCart" class="btn btn-primary">Checkout</a>
+                </form>
             </td>
         </tr>
-        <a asp-action="Checkout" asp-controller="ShoppingCart" type="submit" class="btn btn-primary">Checkout</a>
+
     }
 </table>

@@ -3,6 +3,17 @@
     ViewData["Title"] = "Home Page";
     int numOfQuantity = 1;
 }
+<style>
+    .card {
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+</style>
 <section class="py-2">
     <div class="container px-4 px-lg-5 mt-5">
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justifycontent-center">
@@ -22,11 +33,14 @@
                                 <span>Price: </span>
                                 <p class="mx-3">@item.Price.ToString("#,##0") Vnđ</p>
                             </div>
-                            <a asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-productId="@item.Id" asp-route-quantity="@numOfQuantity">
-                                <button class="btn btn-outline-dark">
+                            <form asp-controller="ShoppingCart" asp-action="AddToCart" method="post">
+                                <input type="hidden" name="productId" value="@item.Id" />
+                                <input type="hidden" name="quantity" value="1" />
+                                <button type="submit" class="btn btn-outline-dark add-to-cart-btn">
                                     <i class="bi-cart-fill me-1"></i> Add to Cart
                                 </button>
-                            </a>
+                            </form>
+
                         </div>
                     </div>
                 </div>

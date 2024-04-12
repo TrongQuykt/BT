@@ -40,10 +40,9 @@ namespace WebBanHang.Areas.Admin.Controllers
             return View(order);
         }
 
-        // Hiển thị form cập nhật đơn hàng
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var order = _orderService.GetOrderById(id);
+            var order = await _orderService.GetOrderById(id);
             if (order == null)
             {
                 return NotFound();
@@ -51,10 +50,10 @@ namespace WebBanHang.Areas.Admin.Controllers
             return View(order);
         }
 
-        // Xử lý cập nhật đơn hàng
+        // POST: Admin/Order/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Order order)
+        public async Task<IActionResult> Edit(int id, Order order)
         {
             if (id != order.Id)
             {
@@ -63,16 +62,25 @@ namespace WebBanHang.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                _orderService.UpdateOrder(order);
+                await _orderService.UpdateOrder(order);
                 return RedirectToAction(nameof(Index));
             }
             return View(order);
         }
-
-        // Xác nhận xóa đơn hàng
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            var order = _orderService.GetOrderById(id);
+            var order = await _orderService.GetOrderById(id);
+            if (order == null)
+            {
+                return NotFound();
+            }
+            return View(order);
+        }
+        // Xác nhận xóa đơn hàng
+        // GET: Admin/Order/Delete/5
+        public async Task<IActionResult> Delete(int id)
+        {
+            var order = await _orderService.GetOrderById(id);
             if (order == null)
             {
                 return NotFound();
@@ -80,17 +88,12 @@ namespace WebBanHang.Areas.Admin.Controllers
             return View(order);
         }
 
-        // Xử lý xóa đơn hàng
+        // POST: Admin/Order/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var order = _orderService.GetOrderById(id);
-            if (order == null)
-            {
-                return NotFound();
-            }
-            _orderService.DeleteOrder(id);
+            await _orderService.DeleteOrder(id);
             return RedirectToAction(nameof(Index));
         }
     }
