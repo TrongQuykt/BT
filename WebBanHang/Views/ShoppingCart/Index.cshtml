@@ -18,5 +18,6 @@
                 <a asp-action="RemoveFromCart" asp-routeproductId="@item.ProductId">Remove</a>
             </td>
         </tr>
+        <a asp-action="Checkout" asp-controller="ShoppingCart" type="submit" class="btn btn-primary">Checkout</a>
     }
 </table>
