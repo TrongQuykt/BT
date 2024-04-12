@@ -64,7 +64,7 @@ namespace WebBanHang.Controllers
             {
                 return NotFound();
             }
-            await _productRepository.LoadProductImagesAsync(product);
+
             return View(product);
         }
 
